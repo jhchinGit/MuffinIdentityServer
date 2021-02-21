@@ -12,7 +12,7 @@ namespace MuffinIdentityServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddIdentityServer()
-                 .AddInMemoryApiScopes(Config.ApiScopes)
+                 .AddInMemoryApiScopes(Config.GetApiResources)
                 .AddInMemoryClients(Config.Clients)
                 .AddDeveloperSigningCredential();
         }

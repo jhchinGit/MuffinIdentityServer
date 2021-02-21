@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31005.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MuffinIdentityServer", "MuffinIdentityServer\MuffinIdentityServer.csproj", "{8119BC0E-E164-4550-909D-2DD434090CC5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8119BC0E-E164-4550-909D-2DD434090CC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8119BC0E-E164-4550-909D-2DD434090CC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8119BC0E-E164-4550-909D-2DD434090CC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8119BC0E-E164-4550-909D-2DD434090CC5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3C0CDF93-3942-464C-BF6E-8D757C7899C8}
+	EndGlobalSection
+EndGlobal

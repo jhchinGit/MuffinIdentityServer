@@ -1,3 +1,4 @@
+using IdentityServer4.Validation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -23,13 +24,15 @@ namespace MuffinIdentityServer
         {
             services.AddIdentityServer()
                 .AddInMemoryApiScopes(Config.GetApiScopes)
-                //.AddInMemoryApiResources(Config.GetApiResources)
+                .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryClients(Config.GetClients)
                 .AddDeveloperSigningCredential()
                 .AddTestUsers(Config.GetUsers());
 
             services.AddDbContext<RepositoryContext>(options =>
             options.UseNpgsql(Configuration.GetConnectionString("DefaultConncetion")));
+
+            services.AddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,5 +1,6 @@
 ﻿using IdentityServer4;
 using IdentityServer4.Models;
+using IdentityServer4.Test;
 using System.Collections.Generic;
 
 namespace MuffinIdentityServer
@@ -20,6 +21,23 @@ namespace MuffinIdentityServer
                 new ApiScope("postman_api", "Postman Test Resource")
             };
 
+        public static List<TestUser> GetUsers()
+        => new List<TestUser>
+        {
+            new TestUser
+            {
+                SubjectId = "1",
+                Username = "alice",
+                Password = "password"
+            },
+            new TestUser              
+            {
+                SubjectId = "2",
+                Username = "bob",
+                Password = "password"
+            }
+        };
+
         public static IEnumerable<Client> GetClients =>
             new List<Client>
             {
@@ -28,7 +46,7 @@ namespace MuffinIdentityServer
                     ClientId = "client",
 
                     // no interactive user, use the clientid/secret for authentication
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
 
                     AllowAccessTokensViaBrowser = true,
 

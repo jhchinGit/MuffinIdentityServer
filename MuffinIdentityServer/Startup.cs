@@ -23,11 +23,10 @@ namespace MuffinIdentityServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddIdentityServer()
+                .AddDeveloperSigningCredential()
                 .AddInMemoryApiScopes(Config.GetApiScopes)
                 .AddInMemoryApiResources(Config.GetApiResources())
-                .AddInMemoryClients(Config.GetClients)
-                .AddDeveloperSigningCredential()
-                .AddTestUsers(Config.GetUsers());
+                .AddInMemoryClients(Config.GetClients);
 
             services.AddDbContext<RepositoryContext>(options =>
             options.UseNpgsql(Configuration.GetConnectionString("DefaultConncetion")));

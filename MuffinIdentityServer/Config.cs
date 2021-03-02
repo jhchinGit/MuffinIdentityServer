@@ -10,7 +10,7 @@ namespace MuffinIdentityServer
         public static IEnumerable<ApiResource> GetApiResources() =>
             new List<ApiResource>
             {
-                new ApiResource("muffin_resource_api", "Muffin Resource Api")
+                new ApiResource("muffinscopeapi", "Muffin Resource Api")
             };
 
         public static IEnumerable<ApiScope> GetApiScopes =>
@@ -47,7 +47,7 @@ namespace MuffinIdentityServer
                     ClientSecrets =
                     {
                         new Secret("muffinsecret".Sha512())
-                        //new Secret("secret".Sha256())
+                        //new Secret("muffinsecret".Sha256())
                     },
                     AllowedScopes =
                     {
@@ -61,6 +61,7 @@ namespace MuffinIdentityServer
                     RefreshTokenExpiration = TokenExpiration.Absolute,
                     AbsoluteRefreshTokenLifetime = 86400,
                     AllowAccessTokensViaBrowser = true,
+                    RedirectUris = { "http://localhost:8471" },
                 },
             };
     }

@@ -10,13 +10,15 @@ namespace MuffinIdentityServer
         public static IEnumerable<ApiResource> GetApiResources() =>
             new List<ApiResource>
             {
-                new ApiResource("muffinscopeapi", "Muffin Resource Api")
+                new ApiResource("muffinscopeapi", "Muffin Resource Api"),
+                new ApiResource(IdentityServerConstants.StandardScopes.OfflineAccess, "Muffin Refresh Resource Api")
             };
 
         public static IEnumerable<ApiScope> GetApiScopes =>
             new List<ApiScope>
             {
                 new ApiScope("muffinscopeapi", "Muffin Scope Api"),
+                new ApiScope(IdentityServerConstants.StandardScopes.OfflineAccess, "Muffin Refresh Scope Api"),
             };
 
         public static List<TestUser> GetUsers()
@@ -47,7 +49,6 @@ namespace MuffinIdentityServer
                     ClientSecrets =
                     {
                         new Secret("muffinsecret".Sha512())
-                        //new Secret("muffinsecret".Sha256())
                     },
                     AllowedScopes =
                     {
@@ -57,9 +58,9 @@ namespace MuffinIdentityServer
                     },
                     AllowOfflineAccess = true,
                     RefreshTokenUsage = TokenUsage.ReUse,
-                    AccessTokenLifetime = 300,
+                    AccessTokenLifetime = 10,
                     RefreshTokenExpiration = TokenExpiration.Absolute,
-                    AbsoluteRefreshTokenLifetime = 86400,
+                    //AbsoluteRefreshTokenLifetime = 86400, // using default
                     AllowAccessTokensViaBrowser = true,
                     RedirectUris = { "http://localhost:8471" },
                 },

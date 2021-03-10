@@ -57,10 +57,10 @@ namespace MuffinIdentityServer
                         "muffinscopeapi"
                     },
                     AllowOfflineAccess = true,
-                    RefreshTokenUsage = TokenUsage.ReUse,
-                    AccessTokenLifetime = 10,
+                    RefreshTokenUsage = TokenUsage.OneTimeOnly,
+                    AccessTokenLifetime = 500,
                     RefreshTokenExpiration = TokenExpiration.Absolute,
-                    //AbsoluteRefreshTokenLifetime = 86400, // using default
+                    AbsoluteRefreshTokenLifetime = 86400, // using default
                     AllowAccessTokensViaBrowser = true,
                     RedirectUris = { "http://localhost:8471" },
                 },

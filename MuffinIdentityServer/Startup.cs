@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MuffinIdentityServer.Services;
+using MuffinIdentityServer.Totp;
 
 namespace MuffinIdentityServer
 {
@@ -32,6 +33,9 @@ namespace MuffinIdentityServer
             services.AddDbContext<RepositoryContext>(options =>
             options.UseNpgsql(Configuration.GetConnectionString("DefaultConncetion")));
 
+            services.AddSingleton<ITotpValidator, TotpValidator>();
+            services.AddSingleton<ITotpGenerator, TotpGenerator>();
+            services.AddSingleton<ITotpSetupGenerator, TotpSetupGenerator>();
             //services.AddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordValidator>();
         }
 

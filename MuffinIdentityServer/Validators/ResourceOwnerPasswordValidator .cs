@@ -1,10 +1,9 @@
 ﻿using IdentityModel;
 using IdentityServer4.Models;
 using IdentityServer4.Validation;
-using MuffinIdentityServer.Models;
 using MuffinIdentityServer.Services;
+using MuffinIdentityServer.Totp;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -14,10 +13,19 @@ namespace MuffinIdentityServer
     public class ResourceOwnerPasswordValidator : IResourceOwnerPasswordValidator
     {
         private readonly RepositoryContext _repositoryContext;
+        private readonly ITotpSetupGenerator _totpSetupGenerator;
+        private readonly ITotpGenerator _totpGenerator;
+        private readonly ITotpValidator _totpValidator;
 
-        public ResourceOwnerPasswordValidator(RepositoryContext repositoryContext)
+        public ResourceOwnerPasswordValidator(RepositoryContext repositoryContext,
+            ITotpSetupGenerator totpSetupGenerator,
+            ITotpGenerator totpGenerator,
+            ITotpValidator totpValidator)
         {
             _repositoryContext = repositoryContext;
+            _totpSetupGenerator = totpSetupGenerator;
+            _totpGenerator = totpGenerator;
+            _totpValidator = totpValidator;
         }
 
         public Task ValidateAsync(ResourceOwnerPasswordValidationContext context)
@@ -27,6 +35,24 @@ namespace MuffinIdentityServer
             {
                 context.Result = new GrantValidationResult
                     (TokenRequestErrors.InvalidGrant, "Invalid username or password.");
+                return Task.CompletedTask;
+            }
+
+            if (string.IsNullOrWhiteSpace(context.Request.Raw["totp"]) ||
+                !int.TryParse(context.Request.Raw["totp"], out var currentTotp))
+            {
+                context.Result = new GrantValidationResult
+                   (TokenRequestErrors.InvalidGrant, "Invalid authentication code");
+                return Task.CompletedTask;
+            }
+
+            var setupGeneratorKey = _totpSetupGenerator.Generate("muffinsdnbhdwestworld");
+            var isValidTotp = _totpValidator.IsValidTotp("muffinsdnbhdwestworld", currentTotp);
+
+            if (!isValidTotp)
+            {
+                context.Result = new GrantValidationResult
+                   (TokenRequestErrors.InvalidGrant, "Invalid authentication code");
                 return Task.CompletedTask;
             }
 
@@ -50,9 +76,6 @@ namespace MuffinIdentityServer
                 return Task.CompletedTask;
             }
 
-            //context.Result.IsError = false;
-            //context.Result.Subject = GetClaimsPrincipal();
-
             context.Result = new GrantValidationResult(
                         subject: userProfile.Id.ToString(),
                         authenticationMethod: "custom",
@@ -60,20 +83,6 @@ namespace MuffinIdentityServer
 
             return Task.CompletedTask;
         }
-
-        //private static ClaimsPrincipal GetClaimsPrincipal()
-        //{
-        //    var issued = DateTimeOffset.Now.ToUnixTimeSeconds();
-
-        //    var claims = new List<Claim>
-        //    {
-        //        new Claim(JwtClaimTypes.Subject, Guid.NewGuid().ToString()),
-        //        new Claim(JwtClaimTypes.AuthenticationTime, issued.ToString()),
-        //        new Claim(JwtClaimTypes.IdentityProvider, "localhost")
-        //    };
-
-        //    return new ClaimsPrincipal(new ClaimsIdentity(claims));
-        //}
 
         public static Claim[] GetUserClaims()
         {

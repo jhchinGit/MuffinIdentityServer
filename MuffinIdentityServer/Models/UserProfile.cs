@@ -19,5 +19,8 @@ namespace MuffinIdentityServer.Models
 
         [Column("is_active")]
         public bool IsActive { get; set; }
+
+        [Column("is_totp_valid")]
+        public bool IsTotpValid { get; set; }
     }
 }
